@@ -3,8 +3,13 @@
 const bcrypt = require('bcrypt');
 
 const signup = async (req, res, next) => {
-    req.body.password = await bcrypt.hash(req.body.password, 7);
-    next();
+    try {
+        req.body.password = await bcrypt.hash(req.body.password, 7);
+        next();
+    } catch (err) {
+        console.log("----------------------")
+        next('invlaid')
+    }
 }
 
 module.exports = signup;

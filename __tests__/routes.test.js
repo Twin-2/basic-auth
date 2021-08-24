@@ -3,19 +3,18 @@
 
 const supertest = require('supertest');
 const { server } = require('../src/server.js');
-const { db } = require('../src/models/index.js');
-const { expect, beforeEach } = require('@jest/globals');
+const { sequelize } = require('../src/models/index.js');
 const mockRequest = supertest(server);
 const base64 = require('base-64');
 
 describe('API ROUTES', () => {
 
     beforeEach(async () => {
-        await db.sync();
+        await sequelize.sync();
     })
 
     afterEach(async () => {
-        await db.drop();
+        await sequelize.drop();
     })
 
     it('should respond with a status or 404 if no route is found', async () => {

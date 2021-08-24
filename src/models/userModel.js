@@ -1,6 +1,8 @@
 'use strict';
 
-const User = (sequelize, DataTypes) => sequelize.define('Users', {
+const { sequelize, DataTypes } = require('./index.js');
+
+const Users = sequelize.define('Users', {
     username: {
         type: DataTypes.STRING,
         allowNull: false,
@@ -9,14 +11,13 @@ const User = (sequelize, DataTypes) => sequelize.define('Users', {
     password: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
     }
-});
+})
 
-// methods.searchUsers = function (name) {
-//     User.findOne({ where: { username: name } })
-// };
+Users.searchUsers = async function (name) {
+    let found = await this.findOne({ where: { username: name } })
+    return found
+};
 
 
-
-module.exports = User;
+module.exports = Users;

@@ -1,20 +1,20 @@
 'use strict';
 
 const express = require('express');
-const { users } = require('../models/index.js')
+const users = require('../models/userModel.js')
 const Collection = require('../models/collection-class.js');
 const signupMW = require('../middleware/signup.js');
 const signinMW = require('../middleware/signin.js');
 const userRoutes = express.Router();
 const User = new Collection(users);
 
-userRoutes.post('/user', signupMW, async (req, res) => {
-    try {
-        let user = await User.create(req.body)
-        res.status(201).send(user)
-    } catch (err) {
-        throw new Error(err)
+userRoutes.post('/user', signupMW, async (req, res, next) => {
+
+    let user = await User.create(req.body)
+    if (!user) {
+        next('error creating user')
     }
+    res.status(201).send(user)
 })
 
 //come back to this after middleware
